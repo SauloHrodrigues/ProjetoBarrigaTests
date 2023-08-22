@@ -11,6 +11,7 @@ public class BaseTest implements Constatntes {
 
 	@BeforeClass
 	public static void setup() {
+		System.out.println("Passou pelo Base Test");
 		RestAssured.baseURI = APP_BASE_URL;
 		RestAssured.port = APP_PORT;
 		RestAssured.basePath = APP_BASE_PATH;
