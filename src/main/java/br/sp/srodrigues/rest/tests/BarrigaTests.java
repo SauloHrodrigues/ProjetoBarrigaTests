@@ -5,6 +5,7 @@ import static io.restassured.RestAssured.given;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,11 +57,24 @@ public class BarrigaTests extends BaseTest{
 	public void deveAlterarContaComSucesso() {
 		given()
 			.header("Authorization", "JWT "+ TOKEN) // apis mais novas (JWT ou bearer)
-			.body("{\"nome\":\"'qualquer conta - alterada\"}")
+			.body("{\"nome\":\"penelop charmosa - alterada\"}")
 		.when()
-			.put("/contas/1874389")// ID diferente a 
+			.put("/contas/1875562")// ID diferente a 
 		.then()
 			.statusCode(200)			
+		;
+	}
+	@Test
+	public void naoDeveInserirContaMesmoNome() {
+		given()
+			.header("Authorization", "JWT "+ TOKEN) // apis mais novas (JWT ou bearer)
+			.body("{\"nome\":\"Conta Teste\"}")
+		.when()
+			.post("/contas/")
+		.then()
+			.log().all()
+			.statusCode(400)
+			.body("error",Matchers.is("Já existe uma conta com esse nome!"))
 		;
 	}
 	
